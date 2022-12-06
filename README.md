@@ -168,12 +168,12 @@ sets are bought frequently.
       ![process of constructing the FP tree](./img/Fig.2.png)
       <center>Fig. 2 process of constructing the FP tree</center>
 
-   2. FP mining    
+   2. _FP mining_  
     Fig.3 below shows the pseudo-code. Firstly, input the
     transactions records list D, and set initial input pattern as null.
     Because the pattern is used to store header node with their
     frequent items, so initially none of frequent items are
-    generated.
+    generated.  
     The pseudo-code shows the process of mining the generated
     FP tree. The function is recursively called until all frequent
     item sets with given support are obtained. Besides, the support
