@@ -27,7 +27,7 @@ Our data source also documented relevant papers with the data source. Besides, t
 
 Chen et al. [6] used RFM model to select proper attributes for customer, and then grouped customers by these attributes and clustering algorithms. Their team further studied this topic by taking time variables into consideration[7]. R. Singh et al. [9] used this data set to prove the efficiency of a improved sequential mining algorithm, but did not discuss too much about the frequent sequences themselves. L. Ale et al. [8] and R. Webber [5] used this data set in topics other than data mining.
 
-D. Our Work  
+D. _Our Work_  
 So, from the discussion above, we see that no previous work tried to look for products frequent patterns in our data set. Besides, the paper about sequential mining uses this data set as a tool to prove the efficiency of its improved algorithm instead of being interested in the frequent sequences themselves. Thus, our work seems interesting to look for frequent patterns and sequences themselves in the data set. By observing the data set at different angles, we have a more integrated method to exploit the data.
 
 <p align="center">III. MAIN BODY & ANALYTICAL</p>
@@ -110,7 +110,7 @@ In this section, we implemented frequent pattern tree algorithm to look for freq
        
        For the overall 5 frequent pairs, we can examine the interesting rules of 10 singletons in the pairs. We can see that most of the confidence levels are more than 50%. Applying the same logic to the 41 frequent pairs in the time frame 2011.11-2011.12, nearly half of singletons have a minimal confidence level of 50%. Thus, although frequent pairs are rare, confidence within the pairs are relatively high. This information may be useful for marketing strategies and inventory management strategies.
        
-   3. *Summary*
+   3. *Summary*  
        In general, majority of the singletons have low  transaction frequencies and frequent item sets with two or  more elements are rare in the data set. However, more  frequent item sets can be found out within some specific time frames. And within the frequent item sets, confidences of interesting rules are relatively high. This meaningful information exacted from the data set is useful for marketing and inventory planning.  
        ![](./img/Table89.png)
 
@@ -118,25 +118,23 @@ C. *Frequent Sequence Mining*
 
 In this section, we implemented AprioriAll algorithm to  look for frequent sequences in our data set. Our source codes  and readme files are documented in the appendix. The  implementation details section below briefly explain the logic  and process of the codes.
 
-1. *Implementation Details*
+1. *Implementation Details*  
     In our online retail example, the time variable plays a significant part in dealing with the order of goods purchased. When receiving a data set, the first step is usually to have adequate preparation of understanding attributes and variables in the data set. The time series data can be either univariate or multivariate. The univariate time variable is a single behavioral attribute associated with each time sequence. Possibly, we focus on univariate in our online retail example by using the order that each customer purchased their products. And then find the frequency of this kind of orders to generate the frequent sequences. Through this data mining procedure, we will explore which commodities are popular with customers,  and which commodities combo are selected most.
     
-    1. *Data Cleaning*
+   1. *Data Cleaning*  
          In our data set, customers can be grouped by attributes ‘CustomerID’. Each customers have several transactions to record when and what they buy. Therefore, the critical information columns are ‘Description’, ‘InvoiceDate’, and ‘CustomerID’. Not surprisingly, there are some missing values we need to handle. Since the data are collected by many different collectors of varying levels of ability, we cannot expect them to record data one-hundred percentage of accuracy. So, we use sorting with either ascending order or descending order to find problematic records. We observed  some blank value in ‘CustomerID’ and ‘Description. We think  these records are not normal purchasing transactions, so to  normalize the data set, we decide to remove the all  transactions which at least one of the attributes ‘Description’  or ‘CustomerID’ is blank.
-    2. *Noise Removal*
-    
+
+   2. *Noise Removal*  
          Many real databases are vulnerable to noise, missing  values, and inconsistent data because they are too large and  often come from multiple data sources. Low-quality data will  lead to bad mining results that is meaningless and disturbing  for us to deal with our time series algorithm. Hence, we want  to eliminate both immediate and potential noise as much as  possible. Generally, the removal of short-term fluctuations is a  major noise removal methods. Since our data set is a retailer  database, we realize that each customer may buy many  commodities during several times. Sometimes, purchased  quantities of some products are only small proportions of the  total quantity a customer buys. We will not take such products  into our consideration. The reason is that these goods are not  typical enough to support our time series experiments.  Combine some experience and theories, we set 5% as the  minimum rate to ignore those items whose purchased  quantities percentages are quite low. To do this, we create  findFreqItem function with R program language. This function  will receive each customer’s ID as input, and then find all  transactions’ index that include this customer after scanning  whole database. Next, we get all items’ descriptions through  such index. We calculate the quantity value of each item  purchased by this customer, and append to the output list with  that rate greater than or equal to 5%. As you can imagine, the  data will become smoother and more representative to  illustrate the time series.
     
-    3. *Auxiliary functions*
-    
+   3. *Auxiliary functions*  
         Function isSequent is mainly used to check whether the  given sequence 1 contains sequence 2 in an ordered manner,  and returns true for sequence 1 containing sequence 2,  otherwise returning false. To be specific, for instances here are  two sequences <1 2 3 4> and <1 3>, isSequent (<1 2 3 4>, <1 3>) return true that explain <1 3> is included in sequence <1 2 3 4> in order. However, isSequent (<1 2 3 4>, <3 1>) give us false since the sequence <1 2 3 4> cannot have element 3  before 1. It is obvious that this function can easily determine  whether or not target time sequence is inside the base time  sequence.
     
         Function prunedByFrequency is used to prune the  infrequent item sequence based on AprioriAll algorithm.  Assume a situation when you build the k-frequent item  sequence where k≥2. There are many candidates item  sequences, but some of them may be infrequent because their  subsets are marked as infrequent sequences. By this function,  there is a high probability that we can reduce the cost of  scanning the database by reducing a significant portion of the  infrequent candidate sequences. For example, execute the function prunedByFrequency (L2, C3, 3) where L2 has <1 4>, <4 5>, and a potential candidate goods sequence may be <1 4  5>. We just need to check if the first and last elements are  inside L2 at this point. Obviously, <1 5> is not in L2, thus <1 4  5> should be removed since it is a infrequent item sequence.  On the contrary, if <1 5> is inside, then <1 4 5> can be the  input for the next step of pruning by support rate.
 
         Function prunedByMinsup is the further step to prune the  current item sequences whose support is less than the minsup.  Similarly, it receives goods sequences as candidates. Then, it  uses isSequent function to count each goods sequence  purchased by all customers. Once its support is greater than or  equal to input minsup (we set the default minsup as 5), this  sequence will be appended to next higher (k+1)-frequent  goods sequences. Finally, the procedures of generate (k+1)- frequent sequence sets are done.
    
-   4. *Conducting AprioriAll Algorithm*
-   
+   4. *Conducting AprioriAll Algorithm*  
         At the beginning, we read the data source from  Online_Retail.csv, extracting each unique customer ID from  the column ‘CustomerID’. We do the same thing to extract  different descriptions of goods and map them to their specific  index. Next, we search all sequences from all customers, and  put each customers’ item sequence as string type to variable  allFreqSeq. Now, the following step is to build C1. Since the  primary scan will generate quite a large number of item  indexes, we have to use a pretty high minsup to limit items  that are purchased too few times. We set the 40 as minsup to  get L1 and |L1|=30.  
         ![](./img/Table10.png)
    
@@ -150,8 +148,7 @@ In this section, we implemented AprioriAll algorithm to  look for frequent seque
         ![](./img/Table13.png)
 
 
-2) *Discussion and Analysis of Findings*
-
+2) *Discussion and Analysis of Findings*  
 	In this section, we are trying to apply AprioriAll  algorithm into our selected real life data set. In the beginning,  we set minsup = 5%, which is a limitation number in business  area that represents a kind of data which need to be paid  attention on. However, when we actually applied this minsup  into our AprioriAll algorithm with this data set, we found that  the resulting output is empty, nothing meets the minsup. So,  we changed this dynamic minsup into a fix number 5, which is  a super small number compared to the total number of  transactions. The result is obvious, we found 30 frequent items  in L1, 79 frequent 2-itemset in L2, 8 frequent 3-itemset in L3  and only one 4-itemset are found in L4.
 	
 	The output of the algorithm is shown as frequent  sequence with their frequency. It is very easy to keep track of  all the details we have found during applying the algorithm for  all kind of further use. What’s more, all the candidate tables  are also saved, so we are always able to look back to it and do  more operations on that whenever needed. Other than that, the  number of minsup are not unchangeable, we can always  change the number of it to find different results. This would be  very practical in real world retail database mining, and it only  takes no more than 20 seconds to get all those results that just  been mentioned above.
@@ -160,13 +157,13 @@ In this section, we implemented AprioriAll algorithm to  look for frequent seque
 
 <p align="center">IV. CONCLUSION</p>
 
-A. *Summary of Findings*
+A. *Summary of Findings*  
 From the discussion above, we can see that both frequent patterns and frequent sequences are rare in the data set. Meanwhile, by clustering customers, we found that key customers are rare too. This transaction style may be what a retailer should have. Although the frequent pattern and sequence findings may not have too much practical meaning for this data set, the few key customers found out are useful for marketing strategies planning. Besides the findings above, we also found that the majority of single products are rarely bought by customers. This may be a hint for the retailer to further analyze its products. By clustering similar products in groups, the retailer may consider to get rid of unpopular items in each group and keep their popular peers. In business practice, keeping as few as possible stock units is one of the most useful way to reduce supply chain costs.
 
-B. *Data Pretreatment Issue* 
+B. *Data Pretreatment Issue*  
 In this retail transactions record, there are some return  transactions. When clustering customers, we took these  transactions into consideration to calculate sales revenues.  When minging frequent patterns and sequences, we ignored  these returns for simplicity. However, this simplification will  not have material impact on our analysis since most return  transactions will not reduce original sales quantity to zero. For  example, a return may reduce original sales quantity from 100  to 90. But for our algorithms, the sales quantity makes no  differences as long as it is bigger than zero. If we use return  transactions to reduce corresponding sales quantity, we will  have accurate outcomes, but the accurate ones will not  materially different from our current outcomes.
 
-C. *Further Study*
+C. *Further Study*  
 From the discussion above, we know that for this data set frequent patterns and sequences are rare based on the minimal support we set. This may be transaction style for all retailers, or just for this specific retailer. If we would like to gain deeper insights, we may further review researches on similar retail transaction data set.  
 
 The second consideration is the quantity attribute of the  transaction. Quantity issue is not talked about in the standard algorithm, and our implementation simply ignored it. However,  by intuition we know that quantity of a transaction is important  in practice. An item bought in 10 transactions with 1 unit per  transaction is not more important than an item bought in 1  transaction with 100 units. The quantity issue is another  direction for further study.
