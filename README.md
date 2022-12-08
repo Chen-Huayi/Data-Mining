@@ -4,17 +4,29 @@ The source code is in *src* folder.
 
 
 # Data Mining Algorithms Implementation: An Online Retail Data Set Case
+
+## **List of Contents**
++ [Introduction](#i-introduction)
++ [Background](#ii-background)
++ [Main Body Analytical](#iii-main-body--analytical)
+  1. [Clustering](#a-clustering)
+  2. [Frequent Pattern Mining](#b-frequent-pattern-mining)
+  3. [Frequent Sequence Mining](#c-frequent-sequence-mining)
++ [Conclusion](#iv-conclusion)
++ [Appendix List](#v-appendix-list)
++ [References](#vi-references)
+
 _**Abstract—We applied frequent patter mining algorithms, frequent sequence mining algorithms and clustering algorithms to a real life retail transaction data set, trying to exact some meaningful information. This is a case study of data mining algorithms implementation.**_
 
 _**Keywords—Frequent Pattern, Frequent Sequence, Clustering, Frequent Pattern Tree Algorithm, AprioriAll Algorithm**_
 
-<p align="center"><b>I. INTRODUCTION</b></p>
+### <p align="center">I. INTRODUCTION</p>
 
 Several data mining algorithms are introduced in the introduction to data mining course. We want to apply these classical algorithms to real life data to see what meaningful information can be extracted. In this project, we will implement clustering algorithms, frequent pattern mining algorithms and frequent sequence mining algorithms on our selected real life data set. By combining several algorithms together to mine a data set, we may have a more integrated method to exploit the data.
 
 In the background section, we will briefly introduce our real life data set and implemented algorithms. For every algorithm implemented, firstly we will talk our implementation details, then we will discuss and analyze our findings. Since these two parts are coherent by nature, we will not separate them into two sections. Instead, we will combine our main body and analytical sections into one section to discuss the implementations and findings. Then, in the conclusion section, we will summarize our analysis, address remaining problems and point out possible further researches. Finally, the appendix section provides a list of all our source codes and spreadsheet working paper.
 
-<p align="center"><b>II. BACKGROUND</b></p>
+### <p align="center">II. BACKGROUND</p>
 
 A. _The Data Set_  
 Our data set is a sales record from a United Kingdom based online retail store [1]. This store mainly sells giftware products. This data set is very suitable for case study of data mining algorithms implementation.
@@ -30,9 +42,9 @@ Chen et al. [6] used RFM model to select proper attributes for customer, and the
 D. _Our Work_  
 So, from the discussion above, we see that no previous work tried to look for products frequent patterns in our data set. Besides, the paper about sequential mining uses this data set as a tool to prove the efficiency of its improved algorithm instead of being interested in the frequent sequences themselves. Thus, our work seems interesting to look for frequent patterns and sequences themselves in the data set. By observing the data set at different angles, we have a more integrated method to exploit the data.
 
-<p align="center"><b>III. MAIN BODY & ANALYTICAL</b></p>
+### <p align="center">III. MAIN BODY & ANALYTICAL</p>
 
-**A. _Clustering_**  
+#### A. _Clustering_  
 
 Although others have done much work on customer clustering and classification of this data set, we can still have a quick and simple profiling of the customers to gain some insights. Before we dive deeply to analyze products, we will use partitioning method to allocate customers into different clusters. 
 
@@ -55,7 +67,7 @@ Although others have done much work on customer clustering and classification of
 
    From the figure and table we can see that most of customers are not quite important. A few customers contribute majority of the sales revenues. These customers deserve further analysis.
 
-**B. _Frequent Pattern Mining_**  
+#### B. _Frequent Pattern Mining_  
 
 In this section, we implemented frequent pattern tree algorithm to look for frequent patterns in our data set. We also used open sourced Apriori algorithm for checking calculation. Our source codes and readme files are documented in the appendix. In our context, frequent patterns means which item sets are bought frequently.
 
@@ -116,7 +128,7 @@ In this section, we implemented frequent pattern tree algorithm to look for freq
        In general, majority of the singletons have low  transaction frequencies and frequent item sets with two or  more elements are rare in the data set. However, more  frequent item sets can be found out within some specific time frames. And within the frequent item sets, confidences of interesting rules are relatively high. This meaningful information exacted from the data set is useful for marketing and inventory planning.  
        ![](./img/Table89.png)
 
-**C. *Frequent Sequence Mining***
+#### C. _Frequent Sequence Mining_
 
 In this section, we implemented AprioriAll algorithm to  look for frequent sequences in our data set. Our source codes  and readme files are documented in the appendix. The  implementation details section below briefly explain the logic  and process of the codes.
 
@@ -157,7 +169,7 @@ In this section, we implemented AprioriAll algorithm to  look for frequent seque
 	
 	The logic for the AprioriAll algorithm we applied to the  database are the same with what we have learnt during the  course. However, since our work processes of mining frequent  pattern and frequent sequence are parallel, we are unable to  base our sequence mining on the pattern mining. Thus, we  only considered singleton here and omitted other frequent  patterns in the sequence. Nevertheless, the coarse findings still  give us some meaningful information, and fortunately frequent  item sets other than singleton are rare and insignificant in the  data set.
 
-<p align="center"><b>IV. CONCLUSION</b></p>
+### <p align="center">IV. CONCLUSION</p>
 
 A. *Summary of Findings*  
 From the discussion above, we can see that both frequent patterns and frequent sequences are rare in the data set. Meanwhile, by clustering customers, we found that key customers are rare too. This transaction style may be what a retailer should have. Although the frequent pattern and sequence findings may not have too much practical meaning for this data set, the few key customers found out are useful for marketing strategies planning. Besides the findings above, we also found that the majority of single products are rarely bought by customers. This may be a hint for the retailer to further analyze its products. By clustering similar products in groups, the retailer may consider to get rid of unpopular items in each group and keep their popular peers. In business practice, keeping as few as possible stock units is one of the most useful way to reduce supply chain costs.
@@ -172,7 +184,7 @@ The second consideration is the quantity attribute of the  transaction. Quantity
 
 For product clustering, we tried to do it at first, but found  that both stock code and description are irregular. Thus, text  mining or other relevant algorithms may be needed to pretreat  the data before standard clustering algorithms can be applied  to them. Nature language treatment and text mining are out of  scope of topics and algorithms we discussed here, but we give  a brief statement of the idea here for the completeness of our  logic.
 
-<p align="center"><b>V. APPENDIX LIST</b></p>
+### <p align="center">V. APPENDIX LIST</p>
 
 A. Clustering folder   
 B. FP tree folder  
@@ -181,7 +193,7 @@ D. AprioriAll folder
 E. Spreadsheet working paper folder  
 All algorithm implementation folders include the codes,  readme file and necessary input files. All technical details are  documented in readme files. Since our data source is xlsx  format, we used Excel to do some simple calculations. These  working papers are in the corresponding folder.
 
-<p align="center"><b>VI. REFERENCES</b></p>
+### <p align="center">VI. REFERENCES</p>
 
 + [1] Dua, D. and Graff, C. (2019). UCI Machine Learning Repository  [http://archive.ics.uci.edu/ml/Online+Retail]. Irvine, CA: University of  California, School of Information and Computer Science. 
 + [2] C. Aggarwal, “Data Mining: The Textbook”, 2015 
