@@ -1,6 +1,5 @@
 # Online Retail Transaction Example
 The [video](https://1drv.ms/v/s!AhfQkpeGM2gdgv9Qxj5MsS22aOgzNg?e=9d7IJx) of *Presentation.pptx* briefly introduces this data mining processes.  
-The [Implementation.pdf](https://github.com/Chen-Huayi/Data-Mining/blob/main/Implementation.pdf) detailedly illustrates how we apply algorithms from data mining in a simple case.  
 The source code is in *src* folder.
 
 
@@ -9,13 +8,13 @@ _**Abstract—We applied frequent patter mining algorithms, frequent sequence mi
 
 _**Keywords—Frequent Pattern, Frequent Sequence, Clustering, Frequent Pattern Tree Algorithm, AprioriAll Algorithm**_
 
-<center>I. INTRODUCTION</center>
+<p align="center">I. INTRODUCTION</p>
 
 Several data mining algorithms are introduced in the introduction to data mining course. We want to apply these classical algorithms to real life data to see what meaningful information can be extracted. In this project, we will implement clustering algorithms, frequent pattern mining algorithms and frequent sequence mining algorithms on our selected real life data set. By combining several algorithms together to mine a data set, we may have a more integrated method to exploit the data.
 
 In the background section, we will briefly introduce our real life data set and implemented algorithms. For every algorithm implemented, firstly we will talk our implementation details, then we will discuss and analyze our findings. Since these two parts are coherent by nature, we will not separate them into two sections. Instead, we will combine our main body and analytical sections into one section to discuss the implementations and findings. Then, in the conclusion section, we will summarize our analysis, address remaining problems and point out possible further researches. Finally, the appendix section provides a list of all our source codes and spreadsheet working paper.
 
-<center>II. BACKGROUND</center>
+<p align="center">II. BACKGROUND</p>
 
 A. _The Data Set_  
 Our data set is a sales record from a United Kingdom based online retail store [1]. This store mainly sells giftware products. This data set is very suitable for case study of data mining algorithms implementation.
@@ -31,7 +30,7 @@ Chen et al. [6] used RFM model to select proper attributes for customer, and the
 D. Our Work  
 So, from the discussion above, we see that no previous work tried to look for products frequent patterns in our data set. Besides, the paper about sequential mining uses this data set as a tool to prove the efficiency of its improved algorithm instead of being interested in the frequent sequences themselves. Thus, our work seems interesting to look for frequent patterns and sequences themselves in the data set. By observing the data set at different angles, we have a more integrated method to exploit the data.
 
-<center>III. MAIN BODY & ANALYTICAL</center>
+<p align="center">III. MAIN BODY & ANALYTICAL</p>
 
 A. _Clustering_  
 Although others have done much work on customer clustering and classification of this data set, we can still have a quick and simple profiling of the customers to gain some insights. Before we dive deeply to analyze products, we will use partitioning method to allocate customers into different clusters. 
@@ -42,9 +41,9 @@ Although others have done much work on customer clustering and classification of
       
       The logic of the axis setting is that these two attributes are effective to evaluate a customer. Customers with low sales revenues can be assigned low priority for company resources allocation, no matter what the transactions number is. On the other hand, customer with high revenues and high transactions numbers may require different marketing strategies and resources allocation compared to customer with high revenues but low transactions numbers, which are always VIP customers.  
    2. _Algorithm and Codes_  
-       K-means clustering is the most famous algorithm for partitioning clusters, and its simplicity and efficiency make it the most widely used of all clustering algorithms. Given a set of data points and a desired number of clusters k, which is specified by the user, k-mean algorithm iteratively divides the data into k clusters based on a certain distance function.
+      K-means clustering is the most famous algorithm for partitioning clusters, and its simplicity and efficiency make it the most widely used of all clustering algorithms. Given a set of data points and a desired number of clusters k, which is specified by the user, k-mean algorithm iteratively divides the data into k clusters based on a certain distance function.
    
-       We use k-means in R language to estimate our clusters. Using the customer calculation outcomes mentioned above as input set of data points and applying the build-in function kmeans and fviz_cluster, R language can easily give us a meaningful clustering result.
+      We use k-means in R language to estimate our clusters. Using the customer calculation outcomes mentioned above as input set of data points and applying the build-in function kmeans and fviz_cluster, R language can easily give us a meaningful clustering result.
 
 2. _Discussion and Analysis of Findings_  
    Fig.1 gives a visualization of the clustering result and
@@ -52,6 +51,7 @@ Although others have done much work on customer clustering and classification of
    Each point represents a customer.  
    ![](./img/Fig1.png)
    ![](./img/Table1.png)
+
    From the figure and table we can see that most of customers are not quite important. A few customers contribute majority of the sales revenues. These customers deserve further analysis.
 
 B. _Frequent Pattern Mining_  
@@ -60,25 +60,25 @@ In this section, we implemented frequent pattern tree algorithm to look for freq
 1. _Implementation Details_  
    1. _FP Tree_  
       While the Apriori algorithm is doable, another frequent pattern mining algorithm is the FP-growth algorithm. In this project, we analyze and implement the FP-growth algorithm using the transnational data set which contains all the transactions occurring between 01/12/2010 and 09/12/2011 for a UK based non-store online retailer. Fig.2 below shows the process of constructing of the FP-Tree. This is a recursive process to repeatedly add subtree until the transaction is empty. After scanning the data set the first time, each item is copied into a corresponding transaction record list to avoid further
-      scan. Within each FP tree node, except the name ID, there are two significant fields. Each tree node contains one parent node to keep track upwards for the frequent items and a homonym node which are the same item name as the tree node itself but belong to a different subtree.  
-      ![](./img/Fig2.png)
+       scan. Within each FP tree node, except the name ID, there are two significant fields. Each tree node contains one parent node to keep track upwards for the frequent items and a homonym node which are the same item name as the tree node itself but belong to a different subtree.  
+       ![](./img/Fig2.png)
       
-   2. _FP mining_ 
-    Fig.3 below shows the pseudo-code. Firstly, input the transactions records list D, and set initial input pattern as null. Because the pattern is used to store header node with their frequent items, so initially none of frequent items are generated.  
+   2. _FP mining_  
+       Fig.3 below shows the pseudo-code. Firstly, input the transactions records list D, and set initial input pattern as null. Because the pattern is used to store header node with their frequent items, so initially none of frequent items are generated.  
        
-      The pseudo-code shows the process of mining the generated FP tree. The function is recursively called until all frequent item sets with given support are obtained. Besides, the support count of the header table items is updated according to the support count corresponding to the item in the FP. If there is no support count for an item in the FP tree, then the item is a non-frequent item and can be ignored. The FP tree construction process and the pseudo-code show that by this algorithm fewer database scans are needed compared with the Apriori algorithm. The algorithm forms the FP tree by scanning the database once and then uses the resulting tree to find out the associations of frequent patterns.
-      ![](./img/Fig3.png)
+       The pseudo-code shows the process of mining the generated FP tree. The function is recursively called until all frequent item sets with given support are obtained. Besides, the support count of the header table items is updated according to the support count corresponding to the item in the FP. If there is no support count for an item in the FP tree, then the item is a non-frequent item and can be ignored. The FP tree construction process and the pseudo-code show that by this algorithm fewer database scans are needed compared with the Apriori algorithm. The algorithm forms the FP tree by scanning the database once and then uses the resulting tree to find out the associations of frequent patterns.
+       ![](./img/Fig3.png)
    
-    3. _FP Growth Algorithm Example_  
-          To illustrate our implementation process, here is an example. The transaction database is shown as TABLE 2, the minimum support threshold is 3. After scanning the database at the first time, order the frequent items as decreasing: {C:4,F:4,A:3,B:3,M:3,P:3} and store the items to Header F1 as shown.  
+   3. _FP Growth Algorithm Example_  
+       To illustrate our implementation process, here is an example. The transaction database is shown as TABLE 2, the minimum support threshold is 3. After scanning the database at the first time, order the frequent items as decreasing: {C:4,F:4,A:3,B:3,M:3,P:3} and store the items to Header F1 as shown.  
    
-          Calculate the frequent item sets containing the frequent item P, which is the last item in header table. Thus we get the first frequent item:{p:3}. With the same procedure, calculate next homonym backward to its parent we have {c,p:3}. At last, we will obtain all of the frequent item sets {c,f:3}, {c,a:3} {f,a:3}, {c,f,a:3}, {a,m:3}, {c,m:3}, {f,m:3}, {a,c,m:3}, {a,f,m:3}, {c,f,m:3}, {a,c,f,:3}, {c,p:3}. Plus the frequent singleton in Header F1, the result from these small sample data illustrated our mining algorithm.  
+       Calculate the frequent item sets containing the frequent item P, which is the last item in header table. Thus we get the first frequent item:{p:3}. With the same procedure, calculate next homonym backward to its parent we have {c,p:3}. At last, we will obtain all of the frequent item sets {c,f:3}, {c,a:3} {f,a:3}, {c,f,a:3}, {a,m:3}, {c,m:3}, {f,m:3}, {a,c,m:3}, {a,f,m:3}, {c,f,m:3}, {a,c,f,:3}, {c,p:3}. Plus the frequent singleton in Header F1, the result from these small sample data illustrated our mining algorithm.  
    
-          Our source codes are written based on the principles above. The findings, which we had after applying the source codes to the real life data set, are discussed and analyzed in the next sub section.
+       Our source codes are written based on the principles above. The findings, which we had after applying the source codes to the real life data set, are discussed and analyzed in the next sub section.
        ![](./img/Table2.png)
    
    4. _Checking Calculation By Apriori Algorithm_  
-        We also used the mlxtend library that comes with python for checking calculation [10]. Below is a brief summary of the process. Codes and readme file are documented in appendix.  
+      We also used the mlxtend library that comes with python for checking calculation [10]. Below is a brief summary of the process. Codes and readme file are documented in appendix.  
         
       _Data Cleaning_. The algorithm itself requires data frame and minimum support as input parameters. So, before using functions, we need to organize and format the data to some extent. For consistency, we remove the part of the data that is not normal transactions, i.e., the part of invoiceNo that starts with C, and the part that does not contain invoiceNo, in the cleanData function. Only the part of normal transactions is kept as a reference for the data.  
       
@@ -90,13 +90,15 @@ In this section, we implemented frequent pattern tree algorithm to look for freq
    
 2. _Discussion and Analysis of Findings_  
    1. _Overall Outcomes_  
-        After running our programs and arranging the data, we have the following TABLE 3 to show the overall outcomes. The number 1, 2 and 3 mean how many items in the item sets (cardinality). Other numbers mean how many item sets with certain cardinality meet the minimal support requirement. 
-        ![](./img/Table3.png)
-        The minimal support was originally set as 0.05, then nothing was found. Then we decreased the minimal support to 0.03 and finally to 0.01, in the end we could find something. The total number of singleton is 3947. From the table, we can see that even when minimal support is as low as 0.01, the frequent singletons are less than 20% of the total singletons. When the minimal support is set as 0.03 to find frequent pairs, the table shows that there are only 5 pairs meet the requirement. Increasing minimal support or item sets cardinality beyond this range is kind of meaningless. In brief summary, most of products in our data set have very low transaction frequency and connections between products seem to be very weak.
+       After running our programs and arranging the data, we have the following TABLE 3 to show the overall outcomes. The number 1, 2 and 3 mean how many items in the item sets (cardinality). Other numbers mean how many item sets with certain cardinality meet the minimal support requirement.  
+       ![](./img/Table3.png)
+
+       The minimal support was originally set as 0.05, then nothing was found. Then we decreased the minimal support to 0.03 and finally to 0.01, in the end we could find something. The total number of singleton is 3947. From the table, we can see that even when minimal support is as low as 0.01, the frequent singletons are less than 20% of the total singletons. When the minimal support is set as 0.03 to find frequent pairs, the table shows that there are only 5 pairs meet the requirement. Increasing minimal support or item sets cardinality beyond this range is kind of meaningless. In brief summary, most of products in our data set have very low transaction frequency and connections between products seem to be very weak.
    
    2. _Deeper Studies_  
        Our data set is a sales record. So, not only transaction frequency of a item is important, but also its total sales quantity. TABLE 4 shows the top 10 items by transaction frequency and total sales quantity. From the table, we can see that the overlapping count (overlapping items are marked as red) is only This means that only half of the 10 most frequent singletons are also sold the most quantities, and vice versa. So, in this context, frequent items not necessarily mean popular items.
        ![](./img/Table4.png)
+
        Transactions in our data set occurred worldwide. And  UK is the major market, counted as more than 90% of the total  transactions. So, we are curious how will the UK frequent patterns table look like. TABLE 5 shows the findings. We find that TABLE 5 is very similar to TABLE 2. Since transactions of UK are dominant in the data set, this finding is not a surprise. It is unnecessary to re-run our codes for 0.01 minimal support here.   
        
        The items in this data set are giftware product. Thus, its  meaningful to see how will the frequent patterns table look  like in the holidays’ sales peak season. We define holidays’  sales peak season as November to next year’s January.  However, since our data set only has records from 01/12/2010  to 09/12/2011, we will examine time frame 2010.12-2011.01 and 2011.11-2011.12 separately. TABLE 6 and TABLE 7 shows our findings.
@@ -109,7 +111,7 @@ In this section, we implemented frequent pattern tree algorithm to look for freq
        For the overall 5 frequent pairs, we can examine the interesting rules of 10 singletons in the pairs. We can see that most of the confidence levels are more than 50%. Applying the same logic to the 41 frequent pairs in the time frame 2011.11-2011.12, nearly half of singletons have a minimal confidence level of 50%. Thus, although frequent pairs are rare, confidence within the pairs are relatively high. This information may be useful for marketing strategies and inventory management strategies.
        
    3. *Summary*
-       In general, majority of the singletons have low  transaction frequencies and frequent item sets with two or  more elements are rare in the data set. However, more  frequent item sets can be found out within some specific time frames. And within the frequent item sets, confidences of interesting rules are relatively high. This meaningful information exacted from the data set is useful for marketing and inventory planning.
+       In general, majority of the singletons have low  transaction frequencies and frequent item sets with two or  more elements are rare in the data set. However, more  frequent item sets can be found out within some specific time frames. And within the frequent item sets, confidences of interesting rules are relatively high. This meaningful information exacted from the data set is useful for marketing and inventory planning.  
        ![](./img/Table89.png)
 
 C. *Frequent Sequence Mining*
@@ -135,23 +137,17 @@ In this section, we implemented AprioriAll algorithm to  look for frequent seque
    
    4. *Conducting AprioriAll Algorithm*
    
-        At the beginning, we read the data source from  Online_Retail.csv, extracting each unique customer ID from  the column ‘CustomerID’. We do the same thing to extract  different descriptions of goods and map them to their specific  index. Next, we search all sequences from all customers, and  put each customers’ item sequence as string type to variable  allFreqSeq. Now, the following step is to build C1. Since the  primary scan will generate quite a large number of item  indexes, we have to use a pretty high minsup to limit items  that are purchased too few times. We set the 40 as minsup to  get L1 and |L1|=30.
-   
+        At the beginning, we read the data source from  Online_Retail.csv, extracting each unique customer ID from  the column ‘CustomerID’. We do the same thing to extract  different descriptions of goods and map them to their specific  index. Next, we search all sequences from all customers, and  put each customers’ item sequence as string type to variable  allFreqSeq. Now, the following step is to build C1. Since the  primary scan will generate quite a large number of item  indexes, we have to use a pretty high minsup to limit items  that are purchased too few times. We set the 40 as minsup to  get L1 and |L1|=30.  
         ![](./img/Table10.png)
    
-        To generate C2, we use two for loops to make all  elements self-join each other, then prune the low support  sequences to build L2 with |L2|=79.
-   
+        To generate C2, we use two for loops to make all  elements self-join each other, then prune the low support  sequences to build L2 with |L2|=79.  
         ![](./img/Table11.png)
    
-        To generate C3, there are slight differences during the  join step. We use two sequences whose last and front element  are equal from the first and second sequences respectively. For  instance, <1 2> and <2 3> to build <1 2 3>, because the two  time sequences need to have a connection point (2) that overlaps. And then prune the infrequent item sequences and  low minsup to generate L3 where |L3|=8.
-   
+        To generate C3, there are slight differences during the  join step. We use two sequences whose last and front element  are equal from the first and second sequences respectively. For  instance, <1 2> and <2 3> to build <1 2 3>, because the two  time sequences need to have a connection point (2) that overlaps. And then prune the infrequent item sequences and  low minsup to generate L3 where |L3|=8.  
         ![](./img/Table12.png)
    
-        Identically, we generate C4 by merging the two same  connection elements, like <1 2 3> and <2 3 4> to get <1 2 3  4>. After pruning we get L4 with |L4|=1.
-   
+        Identically, we generate C4 by merging the two same  connection elements, like <1 2 3> and <2 3 4> to get <1 2 3  4>. After pruning we get L4 with |L4|=1.  
         ![](./img/Table13.png)
-   
-        
 
 
 2) *Discussion and Analysis of Findings*
